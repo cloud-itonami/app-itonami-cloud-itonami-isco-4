@@ -1,0 +1,28 @@
+;; ISCO-08 major group 4 (Clerical Support Workers) — physical-AI sample.
+;; The physical work declared here is the handling the occupation itself
+;; entails (ASSUMPTION, to be replaced with a sourced premise): placing a
+;; bundle of incoming forms onto the intake tray and delivering record
+;; boxes from the registry to office desks. Every number without a cited
+;; source is marked `estimate` in its :basis.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-4"
+ :cases
+ [{:id :intake-form-bundle-setup
+   :kind :manipulator
+   :procedure "arm moves a bundle of incoming forms from the mail cart onto the intake scanner tray"
+   :params {:l1-m 0.50 :l2-m 0.45 :m1-kg 4.0 :m2-kg 3.0
+            :from [0.60 -0.20] :to [0.35 0.75] :duration-s 3.0 :steps 600}
+   :sweep {:param :payload-kg :values [1.0 3.0 5.0 7.0 9.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 60.0 :basis "estimate: continuous shoulder torque of a light collaborative arm (~5 kg class)"}
+   :boundary {:lo 0.1 :hi 30.0}}
+  {:id :record-box-delivery
+   :kind :transport
+   :procedure "office AMR delivers record boxes (document bundles) from the registry to office desks"
+   :params {:mass-kg 30.0 :payload-kg 8.0 :v-max-mps 1.0 :a-max-mps2 0.5
+            :brake-decel-mps2 0.7 :drive-force-n 60.0 :crr 0.02
+            :cog-height-m 0.45 :support-half-length-m 0.20}
+   :sweep {:param :distance-m :values [20.0 40.0 60.0 80.0 120.0]}
+   :quantity :cycle-time-s
+   :limit {:max 70.0 :basis "estimate: each desk delivery within 70 s so the clerical shift starts on time"}
+   :boundary {:lo 5.0 :hi 250.0}}]}
